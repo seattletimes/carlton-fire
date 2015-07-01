@@ -1,0 +1,38 @@
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+@import "seattletimes";
+@import "flexbox";
+
+main.interactive {
+  max-width: 620px;
+  margin: auto;
+}
+
+.aspect-outer {
+  width: 100%;
+
+  .aspect-inner {
+    height: 0;
+    padding-bottom: 70%;
+    position: relative;
+
+    leaflet-map {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+canvas.graph {
+  clear: both;
+  width: 100%;
+  height: 200px;
+}

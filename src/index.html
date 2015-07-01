@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <title><%= json.project.title %></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <%= t.include("partials/_adHead.html") %>
+  </head>
+  <body>
+
+    <responsive-child>
+      <main class="interactive">
+
+        <div class="map-container aspect-outer">
+          <div class="aspect-inner">
+            <leaflet-map lat="48.213" lng="-119.932" zoom="9">
+              <tile-layer layer="esriTopographic"></tile-layer>
+            </leaflet-map>
+          </div>
+        </div>
+
+        <div class="canvas-container">
+          <canvas class="graph"></canvas>
+        </div>
+
+      </main>
+    </responsive-child>
+
+    <script src="app.js"></script>
+    <% if (json.project.production) { %>
+    <%= !json.project.embedded ? t.include("partials/_adFoot.html") : "" %>
+    <%= t.include("partials/_workHere.html") %>
+    <% } %>
+  </body>
+</html>
