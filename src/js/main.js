@@ -91,12 +91,14 @@ var render = function(selected) {
   }
 };
 
-$(canvas).on("mousemove", function(e) {
+$(canvas).on("mousemove touchstart touchmove", function(e) {
 
   if (!dataBounds) return;
 
   var bounds = canvas.getBoundingClientRect();
-  var x = e.clientX - bounds.left;
+  
+  var x = e.originalEvent.touches ? e.originalEvent.touches[0].clientX : e.clientX;
+  x -= bounds.left;
 
   var time = (x / canvas.width) * (dataBounds.x.max - dataBounds.x.min) + dataBounds.x.min;
   time = Math.round(time);
@@ -113,6 +115,7 @@ $(canvas).on("mousemove", function(e) {
   if (!found) return;
 
   render(found);
+  console.log(found.date);
 
   allLayers.forEach(layer => layer.setStyle({ fillOpacity: 0 }));
   found.layers.forEach(layer => layer.setStyle({ fillOpacity: 1 }));
