@@ -31,8 +31,23 @@ main.interactive {
   }
 }
 
-canvas.graph {
-  clear: both;
-  width: 100%;
-  height: 200px;
+.canvas-container {
+  position: relative;
+
+  canvas.graph {
+    clear: both;
+    width: 100%;
+    height: 200px;
+  }
+
+  .callout {
+    position: absolute;
+    z-index: 999;
+    background: black;
+    color: white;
+    padding: 8px;
+    bottom: 0;
+    right: 0;
+  }
+
 }
