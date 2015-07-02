@@ -5,6 +5,7 @@ var map = mapElement.map;
 var L = mapElement.leaflet;
 
 var deferred = $.Deferred();
+var getColor = require("./palette");
 
 var request = $.ajax({
   url: "./assets/carlton-complex.geojson",
@@ -22,6 +23,7 @@ request.done(data => {
       var hours = time.slice(0, 2) * 1;
       var minutes = time.slice(2) * 1;
       var date = new Date(dateSplit[0], dateSplit[1] - 1, dateSplit[2], hours, minutes);
+      console.log(dateSplit[2])
       var timestamp = date.getTime();
       if (!samples[timestamp]) samples[timestamp] = {
         date,
@@ -32,7 +34,7 @@ request.done(data => {
       samples[timestamp].layers.push(layer);
       samples[timestamp].area += props.acres;
       allLayers.push(layer);
-      layer.setStyle({ stroke: 0, fillColor: "blue" });
+      layer.setStyle({ stroke: 0, fillColor: getColor(timestamp) });
     }
   });
 

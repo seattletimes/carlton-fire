@@ -1,3 +1,4 @@
 module.exports = function(value) {
-  return `hsl(${value / 1000 % 360}, 40%, 60%)`;
+  var day = new Date(value).getDay();
+  return `hsl(${day * 20 % 360}, 40%, 60%)`;
 }
