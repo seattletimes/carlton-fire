@@ -35,7 +35,18 @@ main.interactive {
   }
 }
 
-.leaflet-container, .leaflet-clickable {
+.chiliwist {
+  @size: 30px;
+  width: @size;
+  height: @size;
+  border-radius: 50%;
+  border: 2px dashed rgba(0, 0, 0, .3);
+  background: rgba(0, 0, 0, .1);
+  margin-top: -@size / 2;
+  margin-left: -@size / 2;
+}
+
+.leaflet-container, path.leaflet-clickable {
   cursor: default !important;
 }
 

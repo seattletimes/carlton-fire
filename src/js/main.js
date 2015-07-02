@@ -64,7 +64,7 @@ require("./loadData").then(function(data) {
     `
 
     data.allLayers.forEach(layer => layer.setStyle({ fillOpacity: 0 }));
-    sample.layers.forEach(layer => layer.setStyle({ fillOpacity: 1 }));
+    sample.layers.forEach(layer => layer.setStyle({ fillOpacity: .8 }));
   };
 
   var animating = true;
