@@ -23,7 +23,6 @@ request.done(data => {
       var hours = time.slice(0, 2) * 1;
       var minutes = time.slice(2) * 1;
       var date = new Date(dateSplit[0], dateSplit[1] - 1, dateSplit[2], hours, minutes);
-      console.log(dateSplit[2])
       var timestamp = date.getTime();
       if (!samples[timestamp]) samples[timestamp] = {
         date,
