@@ -2,22 +2,22 @@ module.exports = function(value) {
   var day = new Date(value).getDate();
 
 if (day == 24) {
-    return '#FFFFED';
+    return '#FFFCD5';
   } else if (day == 23) {
-    return '#FCBB6D';
+    return '#FFEFC6';
   } else if (day == 21) {
-    return '#F99E49';
+    return '#FFD990';
   } else if (day == 20) {
-    return '#F47920';
+    return '#FCBB6D';
   } else if (day == 19) {
-    return '#DD788A';
+    return '#F99E49';
   } else if (day == 18) {
-    return '#A05DA5';
+    return '#F47920';
   } else if (day == 17) {
-    return '#522E91';
+    return '#E54E5F';
   } else if (day == 16) {
-    return '#231F20';
+    return '#DD788A';
   } else if (day == 15) {
-    return 'black';
+    return 'A05DA5';
   }
 }
