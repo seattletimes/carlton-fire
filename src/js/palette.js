@@ -20,4 +20,4 @@ if (day == 24) {
   } else if (day == 15) {
     return 'A05DA5';
   }
-}
+};
