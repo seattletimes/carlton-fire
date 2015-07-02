@@ -67,7 +67,20 @@ require("./loadData").then(function(data) {
     sample.layers.forEach(layer => layer.setStyle({ fillOpacity: 1 }));
   };
 
-  $(canvas).on("mousemove touchstart touchmove", function(e) {
+  var animating = true;
+  var index = 0;
+  var animate = function() {
+    if (!animating) return;
+    index = (index + 1) % data.timestamps.length;
+    var time = data.timestamps[index];
+    showSample(data.samples[time]);
+    setTimeout(animate, 400);
+  };
+  animate();
+
+  $(".canvas-container").on("mousemove touchstart touchmove", function(e) {
+
+    animating = false;
 
     var bounds = canvas.getBoundingClientRect();
     
