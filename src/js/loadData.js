@@ -51,6 +51,7 @@ request.done(data => {
   };
 
   geojson.addTo(map);
+  map.fitBounds(geojson.getBounds());
 
   deferred.resolve({
     samples,
