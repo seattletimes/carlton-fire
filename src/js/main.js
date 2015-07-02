@@ -1,55 +1,73 @@
 // require("./lib/social");
 // require("./lib/ads");
 // var track = require("./lib/tracking");
-
-var $ = require("jquery");
 require("component-responsive-frame/child");
 require("component-leaflet-map");
+
+var $ = require("jquery");
+var moment = require("moment");
+var getColor = require("./palette");
 
 var canvas = document.querySelector("canvas.graph");
 var context = canvas.getContext("2d");
 
-var geodata = require("./loadData");
+require("./loadData").then(function(data) {
 
-var render = function(selected) {
+  var render = function(selected) {
 
-  geodata.then(function(data) {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
 
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+      var scaleX = v => (v - data.bounds.x.min) / (data.bounds.x.max - data.bounds.x.min);
+      var scaleY = v => (v - data.bounds.y.min) / (data.bounds.y.max - data.bounds.y.min);
 
-    var scaleX = v => (v - data.bounds.x.min) / (data.bounds.x.max - data.bounds.x.min);
-    var scaleY = v => (v - data.bounds.y.min) / (data.bounds.y.max - data.bounds.y.min);
+      var height = canvas.height - 4;
 
-    context.beginPath();
-    data.timestamps.forEach(function(time, i) {
-      var val = data.values[i];
-      var x = scaleX(time);
-      var y = scaleY(val);
-      context[i ? "lineTo" : "moveTo"](x * canvas.width, canvas.height - y * canvas.height);
-    });
-    context.stroke();
+      var previous = [0, 0];
 
-    if (selected) {
+      data.timestamps.forEach(function(time, i) {
+        var val = data.values[i];
+        var x = scaleX(time) * canvas.width;
+        var y = height - scaleY(val) * height + 2;
+        context.beginPath();
+        context.moveTo(...previous);
+        context.lineTo(x, y);
+        context.lineTo(x, canvas.height);
+        context.lineTo(previous[0], canvas.height);
+        context.closePath();
+        if (selected && selected.timestamp < time) {
+          context.fillStyle = "#888";
+        } else {
+          context.fillStyle = getColor(time);
+        }
+        context.fill();
+        previous = [x, y];
+      });
 
-      var lineX = scaleX(selected.timestamp) * canvas.width;
-      context.beginPath();
-      context.moveTo(lineX, 0);
-      context.lineTo(lineX, canvas.height);
-      context.stroke();
+      if (selected) {
 
-    }
+        var lineX = scaleX(selected.timestamp) * canvas.width;
+        context.fillStyle = "rgba(255, 255, 255, .6)";
+        context.fillRect(lineX, 0, canvas.width, canvas.height);
+      }
+  };
 
-  });
-};
+  render();
 
-render();
+  var callout = document.querySelector(".callout");
 
-var callout = document.querySelector(".callout");
+  var showSample = function(sample) {
+    render(sample);
+    callout.innerHTML = `
+  <div class="date">${moment(sample.timestamp).format("MMM D, YYYY - h:mmA")}</div>
+  <div class="area">${Math.round(sample.area).toLocaleString().replace(/\.0+$/, "")} acres</div>
+    `
 
-$(canvas).on("mousemove touchstart touchmove", function(e) {
+    data.allLayers.forEach(layer => layer.setStyle({ fillOpacity: 0 }));
+    sample.layers.forEach(layer => layer.setStyle({ fillOpacity: 1 }));
+  };
 
-  geodata.then(function(data) {
+  $(canvas).on("mousemove touchstart touchmove", function(e) {
 
     var bounds = canvas.getBoundingClientRect();
     
@@ -68,16 +86,7 @@ $(canvas).on("mousemove touchstart touchmove", function(e) {
         distance = dx;
       }
     }
-    if (!found) return;
-
-    render(found);
-    callout.innerHTML = `
-<div class="date">${found.date.toLocaleString()}</div>
-<div class="area">${Math.round(found.area).toLocaleString().replace(/\.0+$/, "")} acres</div>
-    `
-
-    data.allLayers.forEach(layer => layer.setStyle({ fillOpacity: 0 }));
-    found.layers.forEach(layer => layer.setStyle({ fillOpacity: 1 }));
+    if (found) showSample(found);
 
   });
 
