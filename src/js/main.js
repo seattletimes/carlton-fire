@@ -59,7 +59,8 @@ require("./loadData").then(function(data) {
   var showSample = function(sample) {
     render(sample);
     callout.innerHTML = `
-  <div class="date">${moment(sample.timestamp).format("MMM D, YYYY - h:mmA")}</div>
+  <div class="date">${moment(sample.timestamp).format("MMM D, YYYY")}</div>
+  <div class="time">${moment(sample.timestamp).format("h:mmA")}</div>
   <div class="area">${Math.round(sample.area).toLocaleString().replace(/\.0+$/, "")} acres</div>
     `
 
